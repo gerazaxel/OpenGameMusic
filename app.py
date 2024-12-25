@@ -5,7 +5,7 @@ from waitress import serve
 
 app = Flask(__name__)
 
-DATABASE = 'database.db'  # Путь к базе данных
+DATABASE = 'Z:/OpenGameMusic/OpenGameMusic.db'  # Путь к базе данных
 
 
 # Функция для подключения к базе данных
