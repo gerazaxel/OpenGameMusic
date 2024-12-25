@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Music</title>
+</head>
+<body>
+    <h1>Explore Music</h1>
+    <div>
+        {% for item in tracks %}
+        <div>
+            <h3>{{ item.track.title }}</h3>
+            <p>Tags: {{ item.tags | join(", ") }}</p>
+            <audio controls>
+                <source src="{{ item.track.file_path }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Music</title>
+</head>
+<body>
+    <h1>Upload Your Music</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="music-title">Track Title:</label>
+        <input type="text" id="music-title" name="music-title" required>
+
+        <label for="music-file">Music File:</label>
+        <input type="file" id="music-file" name="music-file" accept="audio/*" required>
+
+        <label for="tags">Tags (comma-separated):</label>
+        <input type="text" id="tags" name="tags" placeholder="e.g., ambient, action, loop">
+
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
