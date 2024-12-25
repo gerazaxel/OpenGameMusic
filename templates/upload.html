@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Music - OpenGameMusic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>OpenGameMusic</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/upload">Upload Music</a></li>
+                    <li><a href="/explore">Explore Music</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="upload" class="section">
+            <div class="container">
+                <h2>Upload Music</h2>
+                <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+                    <label for="music-title">Track Title:</label>
+                    <input type="text" id="music-title" name="music-title" required>
+
+                    <label for="music-file">Music File:</label>
+                    <input type="file" id="music-file" name="music-file" accept="audio/*" required>
+
+                    <label for="tags">Tags (comma-separated):</label>
+                    <input type="text" id="tags" name="tags" placeholder="e.g., ambient, action, loop">
+
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 OpenGameMusic. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
