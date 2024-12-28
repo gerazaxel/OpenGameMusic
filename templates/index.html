@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenGameMusic</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -12,32 +12,91 @@
             <h1>OpenGameMusic</h1>
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/upload">Upload Music</a></li>
-                    <li><a href="/explore">Explore Music</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#upload">Upload Music</a></li>
+                    <li><a href="#explore">Explore</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main>
+        <section id="about" class="section">
+            <div class="container">
+                <h2>About OpenGameMusic</h2>
+                <p>OpenGameMusic is a platform where musicians can share their music and game developers can find tracks to use in their projects. Our goal is to connect creators and provide high-quality, royalty-free music for games.</p>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <div class="container">
+                <h2>Features</h2>
+                <ul>
+                    <li>Upload and share music with the community.</li>
+                    <li>Tag tracks by genre, mood, and usage type.</li>
+                    <li>Discover music for your game using our search and filter tools.</li>
+                    <li>Collaborate with musicians and developers.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="upload" class="section">
+            <div class="container">
+                <h2>Upload Music</h2>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <label for="music-title">Track Title:</label>
+                    <input type="text" id="music-title" name="music-title" required>
+
+                    <label for="music-file">Music File:</label>
+                    <input type="file" id="music-file" name="music-file" accept="audio/*" required>
+
+                    <label for="tags">Tags (comma-separated):</label>
+                    <input type="text" id="tags" name="tags" placeholder="e.g., ambient, action, loop">
+
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+        </section>
+
         <section id="explore" class="section">
             <div class="container">
                 <h2>Explore Music</h2>
                 <p>Browse our library of tracks:</p>
                 <div class="music-library">
-                    {% for track in tracks %}
+                    <!-- Example placeholder for music tracks -->
                     <div class="track">
-                        <h3>{{ track.title }}</h3>
-                        <p>Tags: {{ track.tags }}</p>
+                        <h3>Track Title 1</h3>
+                        <p>Tags: Ambient, Relaxing</p>
                         <audio controls>
-                            <source src="{{ url_for('static', filename=track.file_path) }}" type="audio/mpeg">
+                            <source src="example1.mp3" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
                     </div>
-                    {% endfor %}
+
+                    <div class="track">
+                        <h3>Track Title 2</h3>
+                        <p>Tags: Action, Intense</p>
+                        <audio controls>
+                            <source src="example2.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
                 </div>
+            </div>
+        </section>
+        <section id="explore" class="section"></section>
+            <div class="container">
+                <h2>Search</h2>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <label for="music-title">Track Title:</label>
+                    <input type="text" id="music-title" name="music-title" required>
+
+                    <label for="tags">Tags (comma-separated):</label>
+                    <input type="text" id="tags" name="tags" placeholder="e.g., ambient, action, loop">
+
+                    <button type="submit">Search</button>
+                </form>
             </div>
         </section>
     </main>
