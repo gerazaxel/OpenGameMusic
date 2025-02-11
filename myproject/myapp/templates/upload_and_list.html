@@ -1,0 +1,143 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/noti.svg' %}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OpenGameMusic</title>
+    </head>
+    <body>
+        <div class="header">
+            <img src="/static/images/noti.svg" alt="" class="logo">
+        </div>
+    <form method="post" enctype="multipart/form-data">
+        <div class="load">
+            <h1>Загрузка песни</h1>
+        </div>
+        {% csrf_token %}
+        {{ form.file }}
+        {{ form.title.as_widget }}
+        {{ form.username.as_widget }}
+        
+        <div id="authors">
+            <div id="author-fields">
+                <input type="text" name="authors[]" placeholder="Автор">
+            </div>
+             <div>
+                <button type="button" onclick="addAuthorField()">Добавить артиста</button>
+                <button type="button" onclick="removeLastAuthorField()">Убрать артиста</button>
+            </div>
+        </div>
+        <div id="genres">
+            <div id="genre-fields">
+                <input type="text" name="genres[]" placeholder="Жанр">
+            </div>
+            <div>
+                <button type="button" onclick="addGenreField()">Добавить жанр</button>
+                <button type="button" onclick="removeLastGenreField()">Убрать жанр</button>
+            </div>
+        </div>
+        <button type="submit">Загрузка</button>
+        <button type="reset">Сброс</button>
+    </form>
+    <form method="get">
+        <div class="get">
+            <h1>Cписок песен</h1>
+        </div>
+        <input type="text" name="q" value="{{ query }}" placeholder="Поиск...">
+        <select name="per_page">
+            <option value="5" {% if request.GET.per_page == "5" %}selected{% endif %}>5 песен в столб</option>
+            <option value="10" {% if request.GET.per_page == "10" %}selected{% endif %}>10 песен в столб</option>
+            <option value="20" {% if request.GET.per_page == "20" %}selected{% endif %}>20 песен в столб</option>
+        </select>
+        <button class="filter" type="submit">Фильтр</button>
+    </form>
+
+    <div>
+        {% for song in page_obj %}
+            <div>
+                <strong>Файл:</strong> <a href="{{ song.file.url }}">{{ song.file.name }}</a><br>
+                <strong>Название:</strong> {{ song.title }}<br>
+                <strong>Автор:</strong> {{ song.authors.all|join:", " }}<br>
+                <strong>Жанр:</strong> {{ song.genres.all|join:", " }}<br>
+                <strong>Пользователи:</strong> {{ song.username }}<br>
+                <strong>Загружено:</strong> {{ song.uploaded_at }}<br>
+            </div>
+            <hr>
+        {% empty %}
+        <p>Песен не найдено.</p>
+        <p>Попробуйте изменить.</p>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page=1&per_page={{ request.GET.per_page }}&q={{ query }}">Первый</a>
+                <a href="?page={{ page_obj.previous_page_number }}&per_page={{ request.GET.per_page }}&q={{ query }}">Предыдущий</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                    <strong>{{ num }}</strong>
+                {% elif num > page_obj.number|add:-2 and num < page_obj.number|add:2 %}
+                    <a href="?page={{ num }}&per_page={{ request.GET.per_page }}&q={{ query }}">{{ num }}</a>
+                {% elif num == 1 or num == page_obj.paginator.num_pages %}
+                    <a href="?page={{ num }}&per_page={{ request.GET.per_page }}&q={{ query }}">{{ num }}</a>
+                {% elif num == page_obj.number|add:-3 or num == page_obj.number|add:3 %}
+                    <span>...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&per_page={{ request.GET.per_page }}&q={{ query }}">Следующий</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&per_page={{ request.GET.per_page }}&q={{ query }}">Последний</a>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function addAuthorField() {
+            const authorsDiv = document.getElementById('author-fields');
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'authors[]';
+            newInput.placeholder = 'Автор';
+            authorsDiv.appendChild(newInput);
+        }
+
+        function removeLastAuthorField() {
+            const authorsDiv = document.getElementById('author-fields');
+            const inputFields = authorsDiv.querySelectorAll('input[name="authors[]"]');
+            if (inputFields.length > 1) {
+                authorsDiv.removeChild(inputFields[inputFields.length - 1]);
+            }
+        }
+
+        function addGenreField() {
+            const genresDiv = document.getElementById('genre-fields');
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'genres[]';
+            newInput.placeholder = 'Жанр';
+            genresDiv.appendChild(newInput);
+        }
+        
+        function removeLastGenreField() {
+            const genresDiv = document.getElementById('genre-fields');
+            const inputFields = genresDiv.querySelectorAll('input[name="genres[]"]');
+            if (inputFields.length > 1) {
+                 genresDiv.removeChild(inputFields[inputFields.length - 1]);
+            }
+        }
+         document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('id_title').placeholder = 'Название песни';
+            document.getElementById('id_username').placeholder = 'Ваше имя/ник';
+        });
+    </script>
+</body>
+</html>
